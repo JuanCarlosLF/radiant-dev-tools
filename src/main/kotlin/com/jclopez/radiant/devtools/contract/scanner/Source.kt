@@ -1,4 +1,4 @@
-package com.jclopez.radiant.devtools.contract.contract.scanner
+package com.jclopez.radiant.devtools.contract.scanner
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
