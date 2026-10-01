@@ -3,10 +3,6 @@ package com.jclopez.radiant.devtools.contract.scanner
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * Derived, regenerable record of one concrete item acquisition.
- * Lives in the `items` collection of `scan-results.json`.
- */
 @Serializable
 data class ItemFinding(
     @SerialName("item_id")
