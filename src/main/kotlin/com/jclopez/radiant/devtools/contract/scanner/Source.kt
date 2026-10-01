@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Source(
-    val kind: SourceKind? = null,
-    val command: String? = null,
+    val kind: SourceKind?,
+    val command: String?,
     @SerialName("map_id")
     val mapId: Int,
     @SerialName("map_name")

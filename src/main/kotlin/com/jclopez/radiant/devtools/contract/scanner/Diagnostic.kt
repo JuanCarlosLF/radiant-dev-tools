@@ -8,7 +8,7 @@ data class Diagnostic(
     val code: String,
     val severity: Severity,
     val message: String,
-    val source: Source? = null,
+    val source: Source?,
 )
 
 @Serializable

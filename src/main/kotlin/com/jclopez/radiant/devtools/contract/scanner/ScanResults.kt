@@ -8,11 +8,11 @@ data class ScanResults(
     @SerialName("schema_version")
     val schemaVersion: Int,
     val status: ScanStatus,
-    val items: List<ItemFinding> = emptyList(),
-    val souls: List<SoulFinding> = emptyList(),
+    val items: List<ItemFinding>,
+    val souls: List<SoulFinding>,
     @SerialName("tutor_stations")
-    val tutorStations: List<TutorStation> = emptyList(),
-    val diagnostics: List<Diagnostic> = emptyList(),
+    val tutorStations: List<TutorStation>,
+    val diagnostics: List<Diagnostic>,
 )
 
 @Serializable

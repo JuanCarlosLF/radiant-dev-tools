@@ -7,23 +7,23 @@ import kotlinx.serialization.Serializable
 data class TutorStation(
     val id: String,
     val name: String,
-    val offers: List<TutorOffer> = emptyList(),
+    val offers: List<TutorOffer>,
 )
 
 @Serializable
 data class TutorOffer(
     val move: String,
-    val cost: TutorCost = TutorCost(),
+    val cost: TutorCost,
 )
 
 @Serializable
 data class TutorCost(
     @SerialName("green_shard")
-    val greenShard: Int = 0,
+    val greenShard: Int,
     @SerialName("red_shard")
-    val redShard: Int = 0,
+    val redShard: Int,
     @SerialName("blue_shard")
-    val blueShard: Int = 0,
+    val blueShard: Int,
     @SerialName("yellow_shard")
-    val yellowShard: Int = 0,
+    val yellowShard: Int,
 )

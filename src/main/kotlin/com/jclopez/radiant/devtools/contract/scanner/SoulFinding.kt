@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class SoulFinding(
     @SerialName("stage_id")
     val stageId: String,
-    val requires: List<String> = emptyList(),
+    val requires: List<String>,
     val source: Source,
-    val notes: String = "",
+    val notes: String,
 )
