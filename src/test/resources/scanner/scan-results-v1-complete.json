@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "status": "success",
+  "items": [
+    {
+      "item_id": "POTION",
+      "quantity": 3,
+      "stage_id": "stg_c4h1",
+      "requires": ["rock_smash"],
+      "source": {
+        "kind": "event",
+        "command": "pbReceiveItem(:POTION, 3)",
+        "map_id": 2,
+        "map_name": "Pueblo Hojaverde",
+        "event_id": 37,
+        "event_name": "Test Event",
+        "page_index": 0,
+        "command_index": 1,
+        "x": 19,
+        "y": 19
+      },
+      "tags": ["hidden", "gift"],
+      "notes": "Hidden reward in the eastern room"
+    }
+  ],
+  "souls": [
+    {
+      "stage_id": "stg_f7n2",
+      "requires": ["cut"],
+      "source": {
+        "kind": "event",
+        "command": null,
+        "map_id": 4,
+        "map_name": "Ruta 205",
+        "event_id": 12,
+        "event_name": "Soul Event",
+        "page_index": 1,
+        "command_index": 0,
+        "x": 8,
+        "y": 30
+      },
+      "notes": "Wisp near the flowers"
+    }
+  ],
+  "tutor_stations": [
+    {
+      "id": "tutor_pueblo",
+      "name": "Move Tutor",
+      "offers": [
+        {
+          "move": "ROCKSMASH",
+          "cost": {
+            "green_shard": 2,
+            "red_shard": 0,
+            "blue_shard": 1,
+            "yellow_shard": 0
+          }
+        }
+      ]
+    }
+  ],
+  "diagnostics": [
+    {
+      "code": "missing_stage",
+      "severity": "warning",
+      "message": "The annotated page does not declare a stage.",
+      "source": {
+        "kind": "event",
+        "command": null,
+        "map_id": 2,
+        "map_name": "Pueblo Hojaverde",
+        "event_id": 37,
+        "event_name": "Test Event",
+        "page_index": 1,
+        "command_index": 1,
+        "x": 19,
+        "y": 19
+      }
+    }
+  ]
+}
