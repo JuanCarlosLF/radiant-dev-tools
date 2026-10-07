@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "stages": [
+    {
+      "id": "stg_a1f3",
+      "name": "Pueblo Hojaverde - Ciudad Jubileo",
+      "description": "Abarca el recorrido desde que empieza el juego hasta la entrada en Ciudad Jubileo.",
+      "unlocks": []
+    },
+    {
+      "id": "stg_b2e7",
+      "name": "Ciudad Jubileo - Ciudad Pirita: Medalla Lignito (Roco)",
+      "description": "Finaliza en el momento exacto del combate contra Roco como evento final del tramo.",
+      "unlocks": []
+    },
+    {
+      "id": "stg_c4h1",
+      "name": "Ciudad Pirita: Medalla Lignito (Roco) - Pueblo Aromaflor",
+      "description": "Empieza justo al vencer a Roco, y acaba al llegar a Pueblo Aromaflor.",
+      "unlocks": ["rock_smash"]
+    },
+    {
+      "id": "stg_d8k3",
+      "name": "Pueblo Aromaflor - Bosque Vetusto",
+      "description": "Empieza al entrar en Aromaflor, hasta combatir contra Malta.",
+      "unlocks": []
+    },
+    {
+      "id": "stg_e5m9",
+      "name": "Bosque Vetusto - Ciudad Vetusta: Medalla Bosque (Gardenia)",
+      "description": "Empieza al derrotar a Malta y su evento final es el combate contra Gardenia.",
+      "unlocks": []
+    },
+    {
+      "id": "stg_f7n2",
+      "name": "Ciudad Vetusta: Medalla Bosque (Gardenia) - Entrada al Monte Corona",
+      "description": "Empieza nada más derrotar a Gardenia, acaba al entrar al Monte Corona por la ruta 207 este.",
+      "unlocks": ["cut", "bike"]
+    },
+    {
+      "id": "stg_g3p6",
+      "name": "Monte Corona - Ciudad Corazón: Medalla Reliquia (Fantina)",
+      "description": "El último evento es el combate contra Fantina.",
+      "unlocks": []
+    },
+    {
+      "id": "stg_h9q4",
+      "name": "Ciudad Corazón: Medalla Reliquia (Fantina) - Ruta 215",
+      "description": "Empieza al derrotar a Fantina y acaba justo al entrar en la ruta 215.",
+      "unlocks": []
+    },
+    {
+      "id": "stg_j2r8",
+      "name": "Ruta 215 - Ciudad Rocavelo: Medalla Adoquín (Brega)",
+      "description": "Acaba en el combate contra Brega.",
+      "unlocks": []
+    },
+    {
+      "id": "stg_k7v3",
+      "name": "Ciudad Rocavelo: Medalla Adoquín (Brega) - Ciudad Pradera: Medalla Ciénaga (Mananti)",
+      "description": "Empieza al vencer a Brega, y acaba combatiendo contra Mananti.",
+      "unlocks": []
+    },
+    {
+      "id": "stg_l6t1",
+      "name": "Ciudad Pradera: Medalla Ciénaga (Mananti) - Ruta 211",
+      "description": "Acaba justo al entrar a Pueblo Caelestis por la Ruta 211.",
+      "unlocks": []
+    },
+    {
+      "id": "stg_m4v5",
+      "name": "Pueblo Caelestis - Ciudad Canal: Medalla Mina (Acerón)",
+      "description": "Desde la entrada al Pueblo Caelestis hasta el combate con Acerón.",
+      "unlocks": []
+    },
+    {
+      "id": "stg_n8w3",
+      "name": "Ciudad Canal: Medalla Mina (Acerón) - Ruta 217",
+      "description": "Desde que vences a Acerón hasta que te adentras por primera vez en la ruta 217.",
+      "unlocks": []
+    },
+    {
+      "id": "stg_p1x7",
+      "name": "Ruta 217 - Ciudad Puntaneva: Medalla Carámbano (Inverna)",
+      "description": "Hasta el combate contra Inverna.",
+      "unlocks": []
+    },
+    {
+      "id": "stg_q5y2",
+      "name": "Ciudad Puntaneva: Medalla Carámbano (Inverna) - Combate contra Saturno",
+      "description": "Al vencer a Saturno acaba.",
+      "unlocks": []
+    },
+    {
+      "id": "stg_r9z6",
+      "name": "Combate contra Saturno - Mundo Distorsión",
+      "description": "Desde que vences a Saturno y tienes que volver al Monte Corona, hasta que sales del Mundo Distorsión.",
+      "unlocks": []
+    },
+    {
+      "id": "stg_s3a9",
+      "name": "Mundo Distorsión - Ciudad Canal: Medalla Faro (Lectro)",
+      "description": "Desde que sales hasta que te enfrentas con Lectro.",
+      "unlocks": []
+    },
+    {
+      "id": "stg_t7b4",
+      "name": "Ciudad Canal: Medalla Faro (Lectro) - Calle Victoria",
+      "description": "Desde que lo vences hasta que sales de la Calle Victoria.",
+      "unlocks": []
+    },
+    {
+      "id": "stg_u2c8",
+      "name": "Calle Victoria - Liga Pokémon",
+      "description": "Desde que sales de la Calle Victoria, hasta que te haces campeón.",
+      "unlocks": []
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "rock_smash",
+      "name": "Golpe Roca"
+    },
+    {
+      "id": "cut",
+      "name": "Corte"
+    },
+    {
+      "id": "bike",
+      "name": "Bicicleta"
+    }
+  ]
+}
