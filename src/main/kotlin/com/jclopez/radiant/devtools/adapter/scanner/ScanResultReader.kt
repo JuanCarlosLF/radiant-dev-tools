@@ -18,10 +18,13 @@ class ScanResultReader() {
         val results: ScanResults =
             JSON.decodeFromString(ScanResults.serializer(), json)
 
-        check(results.schemaVersion == SUPPORTED_SCHEMA_VERSION) {
-            "Unsupported scan results schema version: ${results.schemaVersion}"
+        if (results.schemaVersion != SUPPORTED_SCHEMA_VERSION) {
+            throw UnsupportedScanSchemaException(results.schemaVersion)
         }
 
         return results
     }
 }
+
+class UnsupportedScanSchemaException(schemaVersion: Int) :
+    IllegalStateException("Unsupported scan results schema version: $schemaVersion")
