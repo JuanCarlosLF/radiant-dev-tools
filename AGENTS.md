@@ -18,4 +18,4 @@ Keep changes limited to the requested repository and work unit. Preserve unrelat
 
 ## Engram memory while migration is pending
 
-Historical Engram memories remain owned by the `radiant-platinum` project. The `radiant-devtools` namespace contains only a bootstrap pointer; do not describe this as a merged or completed migration. See [`plans/memory-migration.md`](plans/memory-migration.md) for the verified backup/restore facts. Search old history explicitly with `engram search <query> --project radiant-platinum` until a supported ownership-preserving transfer exists.
+Historical Engram memories remain owned by the `radiant-platinum` project. The `radiant-devtools` namespace was initialized with a bootstrap pointer; do not describe this as a merged or completed migration. See [`plans/memory-migration.md`](plans/memory-migration.md) for the verified backup/restore facts. Search old history explicitly with `engram search <query> --project radiant-platinum` until a supported ownership-preserving transfer exists.
