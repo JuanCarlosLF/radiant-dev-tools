@@ -472,6 +472,7 @@ Reglas de coordinación:
 
 - Si exactamente un detector reclama la página, se recogen sus registros y diagnósticos.
 - Si ninguno la reclama y existe `#addToRadar`, el scanner produce un error de contenido no reconocido.
+- En el comportamiento del slice, una página anotada con `#addToRadar` pero sin un detector aplicable produce el diagnóstico `unrecognized_content` con severidad `error`; esto es distinto de `unregistered_content`, que es el warning para contenido reconocible sin `#addToRadar`.
 - Si más de uno la reclama, el scanner produce un error de detección ambigua y no elige uno silenciosamente.
 - Si ninguno la reclama y no hay contenido relevante, la página se ignora.
 - Un detector puede reclamar contenido reconocido sin `#addToRadar` para emitir el warning correspondiente, pero no genera registros.

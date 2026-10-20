@@ -1,7 +1,7 @@
 # Ruby Producer Plan — Scanner Slice 1
 
 > [!note] Working plan, English, first person
-> Parent tracking document: [[scanner-progresion]] (§7 T4-K0, T4-R0–T4-R3, §10). This file holds the reviewable detail; the ODD holds the checklist and evidence. Repo-relative locator: `radiant-platinum-docs/plans/Evolución del sistema de escaneo y progresión/odd/plans/ruby-producer-plan.md`.
+> Parent tracking document: [[scanner-progresion]] (§7 T4-K0, T4-R0–T4-R3, §10). This file holds the reviewable detail; the ODD holds the checklist and evidence. Repo-relative locator: `plans/Evolución del sistema de escaneo y progresión/odd/plans/ruby-producer-plan.md`.
 
 ## Review status
 

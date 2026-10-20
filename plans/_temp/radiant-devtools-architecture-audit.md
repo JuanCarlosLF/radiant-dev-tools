@@ -3,6 +3,9 @@ status: working report
 source_plan: radiant-devtools-architecture-audit-plan.md
 ---
 
+> [!note] Historical snapshot
+> This audit preserves the observations and design history from its original review. The current index is [[../README|the plans index]]; this file is not active precedence over the proposal, contracts, models, or implementation guide.
+
 # Radiant DevTools architecture audit
 
 > Purpose: this audit compares the legacy implementation with the proposed architecture in `Evolución del sistema de escaneo y progresión.md`. Its output is the exact change list for that canonical proposal and its implementation guide; it does not implement either flow.

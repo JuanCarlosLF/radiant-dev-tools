@@ -47,7 +47,7 @@ El primer slice prueba solo el límite nuevo entre procesos:
 1. Una acción Ruby del menú debug escanea un mapa anotado y publica un `scan-results.json` válido.
 2. La CLI Kotlin/JVM, ejecutada con Gradle Wrapper, deserializa ese archivo y muestra un resumen conciso más diagnósticos.
 
-Antes de escribir código se deben registrar aquí el mapa deliberadamente anotado, la forma de evento, la familia de hallazgo, las colecciones y diagnósticos ejercitados, el comando exacto, la salida esperada y las comprobaciones observables. No se decide ninguno por inferencia.
+El mapa deliberadamente anotado, la forma de evento, la familia de hallazgo, las colecciones y diagnósticos ejercitados, el comando exacto, la salida esperada y las comprobaciones observables quedaron registrados antes de implementar el slice. Este bloque conserva la definición aprobada; el estado de implementación y la prueba disponible se resumen en [[features]].
 
 #### Escenario registrado 2026-09-22
 
@@ -101,7 +101,7 @@ Antes de escribir código se deben registrar aquí el mapa deliberadamente anota
 ```
 - Código `unregistered_content` aceptado para este slice.
 - El bloque anterior es un ejemplo estructural aprobado: `source` siempre es un objeto de localización de página, nunca un placeholder string. Los valores `<actual ...>` se fijan al anotar el mapa 002.
-- Comprobaciones observables (propuestas): exit `0`; `status == "success"`; `items.length == 1` con `item_id` igual al anotado; `diagnostics` con `missing_stage` + contenido no registrado y cero `error`; `souls`/`tutor_stations` vacías; la CLI muestra resumen + diagnósticos.
+- Comprobaciones observables previstas: exit `0`; `status == "success"`; `items.length == 1` con `item_id` igual al anotado; `diagnostics` con `missing_stage` + contenido no registrado y cero `error`; `souls`/`tutor_stations` vacías; la CLI muestra resumen + diagnósticos. La prueba funcional negativa de T7 —resultado `failed` no utilizable y código de salida correspondiente— permanece pendiente. No se afirma una ejecución automatizada reciente de la CLI.
 
 Quedan fuera: generación de catálogos, migración de tutores, Desktop/KMP, migración masiva de utilidades y familias de scanner no incluidas en el escenario elegido.
 

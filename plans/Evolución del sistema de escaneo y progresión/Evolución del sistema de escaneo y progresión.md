@@ -19,7 +19,7 @@ aliases:
 
 | Si necesitas… | Consulta | Propietario |
 |---|---|---|
-| Evidencia del comportamiento legacy y sus límites | [[Sistema de escaneo y progresión - Estado actual]] | Investigación histórica |
+| Evidencia del comportamiento legacy y sus límites | [Investigación histórica en GitLab](https://gitlab.com/fr0y-essentials/Radiant-Platinum-Repository/-/blob/master/radiant-platinum-docs/research/Sistema%20de%20escaneo%20y%20progresi%C3%B3n%20-%20Estado%20actual.md) | Investigación histórica |
 | Campos, identidades y relaciones de negocio | [[domain-models]] | Modelos de dominio aceptados |
 | Formatos JSON, invariantes, scanner y generación PBS | [[contracts]] | Contratos aceptados |
 | Ubicación de código, CLI, fases, pruebas y riesgos | [[Guía de implementación]] | Plan de ejecución |
@@ -79,7 +79,7 @@ radiant-devtools/
 
 Los nombres, lectores, escritores y reglas de publicación de cada artefacto están en [[contracts]], en especial sus secciones de catálogo, resultados, caché y escritura atómica.
 
-El análisis histórico no se reinterpreta como diseño: [[Sistema de escaneo y progresión - Estado actual]] conserva los scripts Ruby legacy, los recuentos y los riesgos observados.
+El análisis histórico no se reinterpreta como diseño: la [investigación de estado actual en GitLab](https://gitlab.com/fr0y-essentials/Radiant-Platinum-Repository/-/blob/master/radiant-platinum-docs/research/Sistema%20de%20escaneo%20y%20progresi%C3%B3n%20-%20Estado%20actual.md) conserva los scripts Ruby legacy, los recuentos y los riesgos observados.
 
 ## Ruta de entrega
 
@@ -97,7 +97,7 @@ La secuencia, las exclusiones y la evidencia de aceptación de cada fase están 
 
 ## Puerta de implementación actual
 
-El primer slice demuestra únicamente el límite Ruby/Kotlin: una acción del menú debug publica un `scan-results.json` válido y la CLI Kotlin/JVM lo resume junto con sus diagnósticos. Aún deben concretarse el mapa anotado, la forma de evento, la familia de hallazgo, el comando, la salida esperada y los datos de aceptación. No se inicia implementación hasta registrarlos en [[Guía de implementación#Primer slice]].
+La puerta del primer slice está satisfecha como implementación histórica: una acción del menú debug publica un `scan-results.json` y la CLI Kotlin/JVM lo resume junto con sus diagnósticos. El escenario, el comando y los criterios observables están registrados en [[Guía de implementación#Primer slice]]. La verificación funcional T7 sigue pendiente; no se afirma que existan pruebas automatizadas recientes de la CLI.
 
 ## Resultado esperado
 

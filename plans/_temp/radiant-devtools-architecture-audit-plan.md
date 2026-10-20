@@ -1,5 +1,8 @@
 # Radiant DevTools architecture audit plan
 
+> [!note] Historical snapshot
+> This temporary plan preserves its original questions and design history. The current index is [[../README|the plans index]]; use the proposal, contracts, models, and implementation guide for active decisions.
+
 Status: temporary working plan
 
 ## Goal
