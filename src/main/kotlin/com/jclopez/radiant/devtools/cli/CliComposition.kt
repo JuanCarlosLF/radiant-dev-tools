@@ -1,6 +1,6 @@
 package com.jclopez.radiant.devtools.cli
 
-import com.jclopez.radiant.devtools.cli.di.presentationModule
+import com.jclopez.radiant.devtools.di.presentationModule
 import com.jclopez.radiant.devtools.di.appModule
 import java.io.PrintStream
 import org.koin.dsl.koinApplication
