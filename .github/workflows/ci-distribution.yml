@@ -1,0 +1,49 @@
+name: CI - Development Distribution
+
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [develop]
+
+permissions:
+  contents: read
+
+jobs:
+  distribution:
+    name: Build and test distribution
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Java 24
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '24'
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: Run manifest functional tests
+        shell: pwsh
+        run: ./scripts/tests/write-distribution-manifest.tests.ps1
+      - name: Build, test, and install distribution
+        run: bash ./gradlew --no-daemon clean test installDist
+      - name: Read project version
+        id: metadata
+        shell: bash
+        run: echo "version=$(bash ./gradlew properties -q | awk '/^version:/ {print $2; exit}')" >> "$GITHUB_OUTPUT"
+      - name: Write distribution manifest
+        shell: pwsh
+        run: >-
+          ./scripts/write-distribution-manifest.ps1
+          -DistributionPath build/install/radiant
+          -CommitSha $env:GITHUB_SHA
+          -Version '${{ steps.metadata.outputs.version }}'
+          -RequiredJavaMajor 24
+      - name: Upload development distribution
+        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+        uses: actions/upload-artifact@v4
+        with:
+          name: radiant-dev
+          path: build/install/radiant/**
+          if-no-files-found: error
