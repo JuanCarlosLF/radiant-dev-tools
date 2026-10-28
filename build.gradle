@@ -23,6 +23,7 @@ kotlin {
 }
 
 application {
+    applicationName = 'radiant'
     mainClass = 'com.jclopez.radiant.devtools.cli.MainKt'
 }
 

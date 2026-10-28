@@ -1,4 +1,4 @@
-package com.jclopez.radiant.devtools.cli.di
+package com.jclopez.radiant.devtools.di
 
 import com.jclopez.radiant.devtools.cli.CliApplication
 import com.jclopez.radiant.devtools.cli.CliCommand
