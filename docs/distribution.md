@@ -1,6 +1,6 @@
 # Development distribution
 
-PR1 produces a validated, per-run development artifact for `radiant`. PR2 adds a local-only Windows installer and stable launcher; it does not download artifacts, modify `PATH`, publish a release, or implement update behavior.
+PR1 produces a validated, per-run development artifact for `radiant`. PR2 adds the local Windows installer and stable launcher. PR3 adds a bounded automatic update check before the launcher executes the CLI, while preserving the active version whenever trust, network, extraction, installation, or concurrency checks fail.
 
 ## CI producer
 
@@ -64,7 +64,35 @@ sequenceDiagram
     JVM-->>User: output and unchanged child exit code
 ```
 
-The manifest SHA-256 values provide integrity checks only; they do not authenticate a distribution. The trusted full `ExpectedCommitSha` is supplied independently by the caller. The CI artifact must be manually downloaded and extracted before invoking the installer; no automatic consumer or updater exists in PR2.
+The manifest SHA-256 values provide integrity checks only; they do not authenticate a distribution. The trusted full `ExpectedCommitSha` is supplied independently by the updater from the validated workflow run metadata. The CI artifact is extracted into an owned temporary directory before the version-owned installer validates and activates it.
+
+### Automatic consumer
+
+```mermaid
+sequenceDiagram
+    actor User as Human
+    participant Stable as installed bin/radiant.cmd
+    participant Updater as active version runtime/update-radiant.ps1
+    participant GitHub as trusted GitHub Actions API
+    participant Zip as owned temporary extraction
+    participant Installer as version-owned install-radiant.ps1
+    participant CLI as selected version bin/radiant.bat
+
+    User->>Stable: radiant scan with caller CWD and arguments
+    Stable->>Stable: validate active commit and updater manifest hash
+    Stable->>Updater: bounded preflight with active commit
+    Updater->>GitHub: bind canonical repository ID, then query trusted develop push workflow
+    GitHub-->>Updater: newest successful run and full head SHA
+    Updater->>GitHub: recover active SHA outside first page when necessary
+    Updater->>GitHub: download binary radiant-dev ZIP by explicit artifact ID
+    Updater->>Zip: validate bounded entries before extraction
+    Zip->>Installer: use trusted active installer, validate and stage distribution
+    Installer-->>Stable: atomically activate active.txt
+    Stable->>CLI: re-read active pointer, forward CWD and arguments
+    CLI-->>User: output and unchanged child exit code
+```
+
+The updater accepts only `JuanCarlosLF/radiant-dev-tools`, its canonical repository ID, `.github/workflows/ci-distribution.yml`, `develop`, `push`, a completed successful run, its full 40-character `head_sha`, and the exact non-expired `radiant-dev` artifact whose workflow-run repository IDs and SHA match. Pull-request, fork, unrelated-workflow, stale, malformed, or ambiguous metadata is rejected. If the active SHA is outside the first 100 runs, a bounded `head_sha` lookup recovers it before selecting a newer run. The binary ZIP is captured from `gh` stdout without shell redirection or `--output`; only the already authenticated, manifest-hashed installer from the active version is executed. The process timeout and output sizes are bounded, credentials are never printed, and a tampered active updater is skipped by the stable wrapper.
 
 ## Responsibility map
 
@@ -75,12 +103,14 @@ The manifest SHA-256 values provide integrity checks only; they do not authentic
 | [`write-distribution-manifest.ps1`](../scripts/write-distribution-manifest.ps1) | Receives explicit commit/version/Java inputs and writes `build/install/radiant/manifest.json`. |
 | [`write-distribution-manifest.tests.ps1`](../scripts/tests/write-distribution-manifest.tests.ps1) | Exercises producer manifest behavior; currently run by CI. |
 | [`install-radiant.ps1`](../scripts/install-radiant.ps1) | Consumes an extracted tree plus trusted SHA, validates and stages it, then activates an immutable version. |
+| [`update-radiant.ps1`](../scripts/update-radiant.ps1) | Binds the canonical repository/run/artifact metadata, downloads binary output through `gh`, validates bounded ZIP entries, and delegates activation only to the manifest-hashed installer owned by the active version. |
 | [`install-radiant.tests.ps1`](../scripts/tests/install-radiant.tests.ps1) | Manual Windows proof for installer, pointer, launcher, rollback, and packaged CLI behavior; CI does not run it. |
-| [`radiant.cmd`](../scripts/radiant.cmd) | Stable wrapper copied to the installation `bin`; validates `active.txt` and delegates to the selected generated launcher. |
-| `build/install/radiant/bin/`, `lib/`, `manifest.json` | Generated producer output and manifest inventory; not hand-authored source. |
-| `radiant-dev` artifact / manual user | Artifact is per-run CI output; a human or agent downloads/extracts it and supplies `ExpectedCommitSha` explicitly. |
+| [`update-radiant.tests.ps1`](../scripts/tests/update-radiant.tests.ps1) | Exercises the updater through a controlled local `gh` mock, including happy path, trust failures, timeout, unsafe ZIPs, locks, and preservation. |
+| [`radiant.cmd`](../scripts/radiant.cmd) | Stable wrapper copied to the installation `bin`; validates `active.txt` and the active updater hash before preflight, then delegates to the selected generated launcher. |
+| `build/install/radiant/bin/`, `lib/`, `runtime/`, `manifest.json` | Generated producer output, version-owned installer/updater/launcher runtime, and manifest inventory; not hand-authored source. |
+| `radiant-dev` artifact / updater | Artifact is per-run CI output; the updater downloads it by trusted run ID and passes the independently validated `head_sha` to the version-owned installer. |
 
-Maintenance rule: update this diagram and table in the same change whenever triggers, producer/consumer paths, manifest fields, activation, or launcher flow changes. PR3 must update them when an updater is actually added; no `scripts/update-radiant.ps1` file exists today.
+Maintenance rule: update these diagrams and the table in the same change whenever triggers, producer/consumer paths, manifest fields, activation, or launcher flow changes. Official release/CD publication remains deferred.
 
 ## Manifest
 
@@ -107,11 +137,24 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/install-radiant.
   -ExpectedCommitSha '0123456789abcdef0123456789abcdef01234567'
 ```
 
-The default layout is `%LOCALAPPDATA%\Radiant\versions\<commit>` with `%LOCALAPPDATA%\Radiant\bin\radiant.cmd` as the stable entry point. Use `-InstallRoot` only for a sandbox or explicit deployment root; the installer validates the complete source inventory, stages and revalidates it, and switches a hashed commit pointer atomically. Existing versions are never replaced or deleted, and a failed install preserves the previous active version.
+The default layout is `%LOCALAPPDATA%\Radiant\versions\<commit>` with `%LOCALAPPDATA%\Radiant\bin\radiant.cmd` as the stable entry point. Each version owns `runtime/install-radiant.ps1` and `runtime/update-radiant.ps1`. Use `-InstallRoot` only for a sandbox or explicit deployment root; the installer validates the complete source inventory, stages and revalidates it, and switches a hashed commit pointer atomically. Existing versions are never replaced or deleted, and a failed install preserves the previous active version.
 
 The stable launcher resolves its root from its own location, not the caller's current directory. It validates the pointer, forwards quoted arguments and the caller CWD to the packaged `bin\radiant.bat`, and returns the child exit code. Missing, tampered, unsafe, or incomplete installations fail closed. The installer does not execute commands from the manifest.
 
-To use the launcher manually, add `%LOCALAPPDATA%\Radiant\bin` to the user `PATH` once through the normal Windows environment UI. PR2 documentation does not perform that mutation. A future PR3 updater will handle trusted artifact discovery; authenticated GitHub access, downloads, cleanup, and release/CD behavior remain deferred.
+To use the launcher manually, add `%LOCALAPPDATA%\Radiant\bin` to the user `PATH` once through the normal Windows environment UI. The installer and updater never perform that mutation. The updater requires Java 24 and a configured `gh` authentication session, but it does not inspect or print credentials. Missing `gh`, offline access, timeout, invalid metadata, invalid ZIP entries, failed installation, or an update lock produces a warning and runs the current active CLI instead.
+
+### Existing PR2 installations
+
+An existing PR2 installation contains the old stable wrapper and cannot acquire PR3 behavior invisibly. Perform one explicit bootstrap with the PR3 distribution and the opt-in `-AllowStableLauncherUpgrade` switch, or install PR3 under a new explicit root:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File runtime/install-radiant.ps1 `
+  -DistributionPath 'C:\path\to\extracted\radiant' `
+  -ExpectedCommitSha '0123456789abcdef0123456789abcdef01234567' `
+  -AllowStableLauncherUpgrade
+```
+
+After that bootstrap, `radiant scan` checks for a newer trusted `develop` artifact before executing the active CLI. The updater never deletes the old version, replaces a running version, or rolls back to an older known run.
 
 ## Installer verification
 
@@ -120,3 +163,11 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/tests/install-ra
 ```
 
 Tests use only an explicit existing temporary root and never perform a default host installation. They cover malformed metadata, trusted-commit mismatch, inventory/path/hash/size failures, reparse rejection where available, rollback, spaces, argument/CWD/exit-code preservation, and packaged CLI smoke.
+
+## Automatic updater verification
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/tests/update-radiant.tests.ps1 -TempRoot 'C:\path\to\existing\temp'
+```
+
+The updater test supplies a controlled local `gh` process and never reaches GitHub. It verifies successful wrapper-to-updater-to-installer-to-new-CLI execution, exact caller arguments and CWD, current-version no-op, missing `gh`, failed or untrusted run metadata, timeout, missing artifact, traversal/rooted/unsafe and case-colliding ZIP entries, installer failure, and concurrent-update preservation. ZIP extraction is rejected before any entry is activated. `gh` is not used as an arbitrary command source, and no manifest field is executed.

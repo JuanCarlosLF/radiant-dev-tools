@@ -10,6 +10,9 @@ $generator = Join-Path (Split-Path -Parent $scripts) 'write-distribution-manifes
 $repo = Split-Path -Parent (Split-Path -Parent $scripts)
 $source = Join-Path $repo 'build/install/radiant'
 if (-not (Test-Path -LiteralPath (Join-Path $source 'manifest.json'))) { throw 'Run installDist before the installer tests.' }
+foreach ($runtimeFile in @('runtime/install-radiant.ps1', 'runtime/update-radiant.ps1', 'runtime/radiant.cmd')) {
+    if (-not (Test-Path -LiteralPath (Join-Path $source $runtimeFile) -PathType Leaf)) { throw "Packaged runtime file is missing: $runtimeFile" }
+}
 $root = Join-Path $TempRoot ('radiant-installer-tests-' + [guid]::NewGuid().ToString('N'))
 $commit = ([string](Get-Content -LiteralPath (Join-Path $source 'manifest.json') -Raw | ConvertFrom-Json).commit_sha)
 $oldChildOutput = $env:RADIANT_TEST_OUTPUT

@@ -27,6 +27,17 @@ application {
     mainClass = 'com.jclopez.radiant.devtools.cli.MainKt'
 }
 
+distributions {
+    main {
+        contents {
+            from('scripts') {
+                into 'runtime'
+                include 'install-radiant.ps1', 'update-radiant.ps1', 'radiant.cmd'
+            }
+        }
+    }
+}
+
 test {
     useJUnitPlatform()
 }
