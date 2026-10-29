@@ -33,7 +33,7 @@ sequenceDiagram
     Workflow->>Manifest: GITHUB_SHA + version + Java 24
     Manifest-->>Tree: manifest.json with inventory hashes
     alt pull_request event
-        Workflow-->>Trigger: tests/build validation only; no upload
+        Workflow-->>Trigger: tests/build validation only, no upload
     else push to develop after merge
         Workflow->>Artifact: upload Tree contents per run
         Artifact-->>Trigger: radiant-dev artifact
@@ -55,8 +55,8 @@ sequenceDiagram
     User->>Installer: DistributionPath + independent ExpectedCommitSha
     Installer->>Root: acquire exclusive lock
     Installer->>Source: validate schema, paths, inventory, size/hash, Java, reparse points
-    Installer->>Root: stage; revalidate; preserve old active
-    Installer->>Root: rename immutable versions/<commit>; atomically replace active.txt
+    Installer->>Root: stage, revalidate, preserve old active
+    Installer->>Root: rename immutable versions/<commit>, atomically replace active.txt
     User->>Stable: invoke from caller CWD with arguments
     Stable->>Root: PowerShell-validate active pointer before CMD interpolation
     Stable->>Child: forward arguments and caller CWD
