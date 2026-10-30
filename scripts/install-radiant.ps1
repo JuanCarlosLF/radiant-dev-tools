@@ -2,7 +2,8 @@
 param(
     [Parameter(Mandatory = $true)] [string] $DistributionPath,
     [Parameter(Mandatory = $true)] [ValidatePattern('^[0-9a-fA-F]{40}$')] [string] $ExpectedCommitSha,
-    [string] $InstallRoot = $(Join-Path $env:LOCALAPPDATA 'Radiant')
+    [string] $InstallRoot = $(Join-Path $env:LOCALAPPDATA 'Radiant'),
+    [switch] $AllowStableLauncherUpgrade
 )
 
 Set-StrictMode -Version 2.0
@@ -183,12 +184,20 @@ try {
     }
     $stable = Join-Path $bin 'radiant.cmd'
     $candidateStable = Join-Path $PSScriptRoot 'radiant.cmd'
+    if (-not (Test-Path -LiteralPath $candidateStable -PathType Leaf)) {
+        $candidateStable = Join-Path (Split-Path -Parent $PSScriptRoot) 'scripts/radiant.cmd'
+    }
     if (-not (Test-Path -LiteralPath $candidateStable -PathType Leaf)) { Fail 'Stable launcher source is missing.' }
     Assert-NoReparse $candidateStable
     if ((Test-Path -LiteralPath $stable) -and -not (Test-Path -LiteralPath $stable -PathType Leaf)) { Fail 'Existing stable launcher is not a regular file.' }
     if (Test-Path -LiteralPath $stable -PathType Leaf) {
         Assert-NoReparse $stable
-        if (-not [Linq.Enumerable]::SequenceEqual([IO.File]::ReadAllBytes($stable), [IO.File]::ReadAllBytes($candidateStable))) { Fail 'Existing stable launcher is incompatible; activation stopped.' }
+        if (-not [Linq.Enumerable]::SequenceEqual([IO.File]::ReadAllBytes($stable), [IO.File]::ReadAllBytes($candidateStable))) {
+            if (-not $AllowStableLauncherUpgrade) { Fail 'Existing stable launcher is incompatible; explicit bootstrap upgrade is required.' }
+            $stableTemp = "$stable.$([guid]::NewGuid().ToString('N')).tmp"
+            Copy-Item -LiteralPath $candidateStable -Destination $stableTemp -Force
+            Replace-FileAtomically $stableTemp $stable
+        }
     } else { Copy-Item -LiteralPath $candidateStable -Destination $stable -Force }
     $pointerTemp = Join-Path $root ('.active-' + [guid]::NewGuid().ToString('N') + '.tmp')
     [IO.File]::WriteAllText($pointerTemp, (New-PointerText $expected), (New-Object Text.UTF8Encoding -ArgumentList $false))
