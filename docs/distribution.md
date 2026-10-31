@@ -129,27 +129,39 @@ CI omits `-TempRoot` because the workflow runner provides `RUNNER_TEMP`; local e
 
 ## Local installation (PR2)
 
-The installer consumes an already extracted distribution and requires the expected full commit SHA from a trusted caller. The manifest is not trusted by itself:
+Use an already extracted distribution. Its folder may be in any location, but its direct children must include `bin/`, `lib/`, `runtime/`, and `manifest.json`.
+
+Replace both example paths below with your extracted folder's path. Replace the example SHA with the independently trusted full SHA from the successful `develop` workflow run. Do not derive it from `manifest.json` alone.
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/install-radiant.ps1 `
-  -DistributionPath 'C:\path\to\extracted\radiant' `
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Downloads\radiant-dev\runtime\install-radiant.ps1' `
+  -DistributionPath 'C:\Downloads\radiant-dev' `
   -ExpectedCommitSha '0123456789abcdef0123456789abcdef01234567'
 ```
 
-The default layout is `%LOCALAPPDATA%\Radiant\versions\<commit>` with `%LOCALAPPDATA%\Radiant\bin\radiant.cmd` as the stable entry point. Each version owns `runtime/install-radiant.ps1` and `runtime/update-radiant.ps1`. Use `-InstallRoot` only for a sandbox or explicit deployment root; the installer validates the complete source inventory, stages and revalidates it, and switches a hashed commit pointer atomically. Existing versions are never replaced or deleted, and a failed install preserves the previous active version.
+`-DistributionPath` selects only the temporary extracted source; it does not choose where Radiant is installed. The default permanent layout is `%LOCALAPPDATA%\Radiant\versions\<commit>` with `%LOCALAPPDATA%\Radiant\bin\radiant.cmd` as the stable entry point. `-InstallRoot` is an optional destination override, not a normal prerequisite.
+
+After verifying the installation, you may remove the downloaded ZIP and extracted source folder. Keep `%LOCALAPPDATA%\Radiant`: it contains the installed versions and future updates.
+
+Each installed version owns `runtime/install-radiant.ps1` and `runtime/update-radiant.ps1`. The installer validates the complete source inventory, stages and revalidates it, and switches a hashed commit pointer atomically. Existing versions are never replaced or deleted, and a failed install preserves the previous active version.
 
 The stable launcher resolves its root from its own location, not the caller's current directory. It validates the pointer, forwards quoted arguments and the caller CWD to the packaged `bin\radiant.bat`, and returns the child exit code. Missing, tampered, unsafe, or incomplete installations fail closed. The installer does not execute commands from the manifest.
 
-To use the launcher manually, add `%LOCALAPPDATA%\Radiant\bin` to the user `PATH` once through the normal Windows environment UI. The installer and updater never perform that mutation. The updater requires Java 24 and a configured `gh` authentication session, but it does not inspect or print credentials. Missing `gh`, offline access, timeout, invalid metadata, invalid ZIP entries, failed installation, or an update lock produces a warning and runs the current active CLI instead.
+Before the first install, ensure Java 24 is available. To enable automatic update checks, also ensure `gh` is available and already configured. Add `%LOCALAPPDATA%\Radiant\bin` to the user `PATH` once through the normal Windows environment UI. The installer and updater never perform that mutation, and the default user installation requires no administrator rights.
+
+The generated `bin\radiant.bat` launcher uses `JAVA_HOME` when it is defined, before it searches `PATH`. Set `JAVA_HOME` to the JDK root, not its `bin` directory. Check both `$env:JAVA_HOME` and `java -version`: `java -version` alone does not show which JDK the launcher will select.
+
+For example, a user `JAVA_HOME` pointing to an Android Studio JBR 21 can override Java 24 on `PATH`. Configure the user override intentionally rather than replacing Android Studio's own JBR. Changing user `JAVA_HOME` can affect other Java tools. Restart the terminal application after persistent environment changes.
+
+Missing `gh`, offline access, timeout, invalid metadata, invalid ZIP entries, failed installation, or an update lock produces a warning and runs the current active CLI instead.
 
 ### Existing PR2 installations
 
 An existing PR2 installation contains the old stable wrapper and cannot acquire PR3 behavior invisibly. Perform one explicit bootstrap with the PR3 distribution and the opt-in `-AllowStableLauncherUpgrade` switch, or install PR3 under a new explicit root:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File runtime/install-radiant.ps1 `
-  -DistributionPath 'C:\path\to\extracted\radiant' `
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Downloads\radiant-dev\runtime\install-radiant.ps1' `
+  -DistributionPath 'C:\Downloads\radiant-dev' `
   -ExpectedCommitSha '0123456789abcdef0123456789abcdef01234567' `
   -AllowStableLauncherUpgrade
 ```
