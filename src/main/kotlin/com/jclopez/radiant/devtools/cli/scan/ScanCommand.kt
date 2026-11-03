@@ -2,6 +2,7 @@ package com.jclopez.radiant.devtools.cli.scan
 
 import com.jclopez.radiant.devtools.adapter.scanner.UnsupportedScanSchemaException
 import com.jclopez.radiant.devtools.application.scan.MapId
+import com.jclopez.radiant.devtools.application.scan.ScanResultsNotFound
 import com.jclopez.radiant.devtools.application.scan.report.GetScanReport
 import com.jclopez.radiant.devtools.application.scan.report.ScanReport
 import com.jclopez.radiant.devtools.contract.scanner.ScanStatus
@@ -29,6 +30,12 @@ class ScanCommand(
 
         val report = try {
             getScanReport(mapId)
+        } catch (error: ScanResultsNotFound) {
+            stderr.println("No se ha encontrado el resultado del escaneo \"${error.path}\"")
+            stderr.println()
+            stderr.println("Asegúrate de que la raíz es \"radiant-devtools\" y \"artifacts\\scan-results.json\" existe.")
+            stderr.println("Asegúrate de que has generado el artefacto mediante el scanner Ruby antes.")
+            return 3
         } catch (error: IOException) {
             stderr.println("I/O error: ${error.message ?: "Unable to read scan results"}")
             return 3
