@@ -24,7 +24,28 @@ class GetScanReport(
                     y = finding.source.y,
                 )
             }
-        val soulCount = results.souls.count { mapId == null || it.source.mapId == mapId.value }
+        val souls = results.souls
+            .filter { mapId == null || it.source.mapId == mapId.value }
+            .map { finding ->
+                ScanReport.Soul(
+                    stageId = finding.stageId,
+                    requires = finding.requires,
+                    notes = finding.notes,
+                    source = finding.source,
+                )
+            }
+        val soulGroups = souls.groupBy { SoulEventKey(it.source.mapId, it.source.eventId) }
+        val duplicateSoulDiagnostics = soulGroups.values
+            .filter { occurrences -> occurrences.size > 1 }
+            .map { occurrences ->
+                ScanReport.Diagnostic(
+                    code = "duplicate_soul_event",
+                    severity = Severity.WARNING,
+                    message = "Multiple soul occurrences were found for the same map event.",
+                    source = null,
+                    relatedSources = occurrences.map { it.source },
+                )
+            }
         val diagnostics = results.diagnostics
             .filter { mapId == null || it.source?.mapId == mapId.value }
             .map { diagnostic ->
@@ -34,31 +55,52 @@ class GetScanReport(
                     message = diagnostic.message,
                     source = diagnostic.source,
                 )
-            }
+            } + duplicateSoulDiagnostics
+        val artifactSources = buildList {
+            addAll(results.items.map { it.source })
+            addAll(results.souls.map { it.source })
+            addAll(results.diagnostics.mapNotNull { it.source })
+        }
+        val mapName = mapId?.let { selectedMap ->
+            artifactSources
+                .firstOrNull { it.mapId == selectedMap.value && it.mapName.isNotBlank() }
+                ?.mapName
+        }
 
         return ScanReport(
             status = results.status,
             usable = results.status == ScanStatus.SUCCESS,
+            mapId = mapId,
+            mapName = mapName,
             itemCount = items.size,
-            soulCount = soulCount,
+            soulCount = soulGroups.size,
             tutorStationCount = results.tutorStations.size,
             warningCount = diagnostics.count { it.severity == Severity.WARNING },
             errorCount = diagnostics.count { it.severity == Severity.ERROR },
             items = items,
+            souls = souls,
             diagnostics = diagnostics,
         )
     }
 }
 
+private data class SoulEventKey(
+    val mapId: Int,
+    val eventId: Int,
+)
+
 data class ScanReport(
     val status: ScanStatus,
     val usable: Boolean,
+    val mapId: MapId?,
+    val mapName: String?,
     val itemCount: Int,
     val soulCount: Int,
     val tutorStationCount: Int,
     val warningCount: Int,
     val errorCount: Int,
     val items: List<Item>,
+    val souls: List<Soul>,
     val diagnostics: List<Diagnostic>,
 ) {
     data class Item(
@@ -71,10 +113,18 @@ data class ScanReport(
         val y: Int,
     )
 
+    data class Soul(
+        val stageId: String,
+        val requires: List<String>,
+        val notes: String,
+        val source: Source,
+    )
+
     data class Diagnostic(
         val code: String,
         val severity: Severity,
         val message: String,
         val source: Source?,
+        val relatedSources: List<Source> = emptyList(),
     )
 }
