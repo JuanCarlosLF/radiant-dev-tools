@@ -1,31 +1,7 @@
 {
   "schema_version": 1,
-  "status": "success",
+  "status": "failed",
   "items": [
-    {
-      "item_id": "POKEBALL",
-      "quantity": 1,
-      "stage_id": "stg_a1f3",
-      "requires": [
-
-      ],
-      "source": {
-        "kind": "event",
-        "map_id": 2,
-        "map_name": "Pueblo Hojaverde",
-        "event_id": 3,
-        "event_name": "Pokeball Suelo",
-        "page_index": 0,
-        "command_index": 2,
-        "x": 29,
-        "y": 42,
-        "command": "pbItemBall(:POKEBALL)"
-      },
-      "tags": [
-
-      ],
-      "notes": ""
-    },
     {
       "item_id": "POTION",
       "quantity": 3,
@@ -35,14 +11,14 @@
       ],
       "source": {
         "kind": "event",
-        "map_id": 2,
-        "map_name": "Pueblo Hojaverde",
-        "event_id": 37,
+        "map_id": 999,
+        "map_name": "Testingv",
+        "event_id": 5,
         "event_name": "Test Event",
         "page_index": 0,
         "command_index": 1,
-        "x": 19,
-        "y": 19,
+        "x": 11,
+        "y": 2,
         "command": "pbReceiveItem(:POTION, 3)"
       },
       "tags": [
@@ -50,10 +26,182 @@
         "gift"
       ],
       "notes": "Hidden reward in the eastern room"
+    },
+    {
+      "item_id": "POKEBALL",
+      "quantity": 1,
+      "stage_id": "stg_c4h1",
+      "requires": [
+
+      ],
+      "source": {
+        "kind": "event",
+        "map_id": 999,
+        "map_name": "Testingv",
+        "event_id": 5,
+        "event_name": "Test Event",
+        "page_index": 5,
+        "command_index": 1,
+        "x": 11,
+        "y": 2,
+        "command": "pbItemBall(:POKEBALL, 1)"
+      },
+      "tags": [
+
+      ],
+      "notes": "Valid pbItemBall test; expected POKEBALL x1"
+    },
+    {
+      "item_id": "POTION",
+      "quantity": 1,
+      "stage_id": "stg_c4h1",
+      "requires": [
+
+      ],
+      "source": {
+        "kind": "event",
+        "map_id": 999,
+        "map_name": "Testingv",
+        "event_id": 5,
+        "event_name": "Test Event",
+        "page_index": 6,
+        "command_index": 1,
+        "x": 11,
+        "y": 2,
+        "command": "pbReceiveItem(:POTION)"
+      },
+      "tags": [
+
+      ],
+      "notes": "Default quantity test; expected POTION x1"
+    },
+    {
+      "item_id": "POTION",
+      "quantity": 1,
+      "stage_id": "stg_c4h1",
+      "requires": [
+
+      ],
+      "source": {
+        "kind": "event",
+        "map_id": 999,
+        "map_name": "Testingv",
+        "event_id": 5,
+        "event_name": "Test Event",
+        "page_index": 7,
+        "command_index": 2,
+        "x": 11,
+        "y": 2,
+        "command": "pbReceiveItem(:POTION, 1)"
+      },
+      "tags": [
+
+      ],
+      "notes": "Multiline comment test; expected POTION x1 Continuation note for the multiline annotation test."
+    },
+    {
+      "item_id": "POTION",
+      "quantity": 2,
+      "stage_id": "stg_a1f3",
+      "requires": [
+
+      ],
+      "source": {
+        "kind": "event",
+        "map_id": 999,
+        "map_name": "Testingv",
+        "event_id": 18,
+        "event_name": "RDT5_09_OBJETO_CONTROL",
+        "page_index": 0,
+        "command_index": 1,
+        "x": 19,
+        "y": 14,
+        "command": "pbReceiveItem(:POTION, 2)"
+      },
+      "tags": [
+
+      ],
+      "notes": ""
     }
   ],
   "souls": [
+    {
+      "stage_id": "stg_a1f3",
+      "requires": [
 
+      ],
+      "source": {
+        "kind": "event",
+        "map_id": 999,
+        "map_name": "Testingv",
+        "event_id": 10,
+        "event_name": "RDT5_01_ALMA_BASICA",
+        "page_index": 0,
+        "command_index": 0,
+        "x": 11,
+        "y": 14,
+        "command": null
+      },
+      "notes": ""
+    },
+    {
+      "stage_id": "stg_f7n2",
+      "requires": [
+        "cut",
+        "bike"
+      ],
+      "source": {
+        "kind": "event",
+        "map_id": 999,
+        "map_name": "Testingv",
+        "event_id": 11,
+        "event_name": "RDT5_02_ALMA_REQUISITOS",
+        "page_index": 0,
+        "command_index": 0,
+        "x": 12,
+        "y": 14,
+        "command": null
+      },
+      "notes": "Hidden area"
+    },
+    {
+      "stage_id": "stg_a1f3",
+      "requires": [
+
+      ],
+      "source": {
+        "kind": "event",
+        "map_id": 999,
+        "map_name": "Testingv",
+        "event_id": 12,
+        "event_name": "RDT5_03_ALMA_DOS_PAGINAS",
+        "page_index": 0,
+        "command_index": 0,
+        "x": 13,
+        "y": 14,
+        "command": null
+      },
+      "notes": "First page"
+    },
+    {
+      "stage_id": "stg_f7n2",
+      "requires": [
+        "cut"
+      ],
+      "source": {
+        "kind": "event",
+        "map_id": 999,
+        "map_name": "Testingv",
+        "event_id": 12,
+        "event_name": "RDT5_03_ALMA_DOS_PAGINAS",
+        "page_index": 1,
+        "command_index": 0,
+        "x": 13,
+        "y": 14,
+        "command": null
+      },
+      "notes": "Second page"
+    }
   ],
   "tutor_stations": [
 
@@ -65,14 +213,14 @@
       "message": "The annotated page does not declare a stage.",
       "source": {
         "kind": "event",
-        "map_id": 2,
-        "map_name": "Pueblo Hojaverde",
-        "event_id": 37,
+        "map_id": 999,
+        "map_name": "Testingv",
+        "event_id": 5,
         "event_name": "Test Event",
         "page_index": 1,
         "command_index": 1,
-        "x": 19,
-        "y": 19,
+        "x": 11,
+        "y": 2,
         "command": null
       }
     },
@@ -82,15 +230,134 @@
       "message": "Recognized item delivery content is not annotated for the radar.",
       "source": {
         "kind": "event",
-        "map_id": 2,
-        "map_name": "Pueblo Hojaverde",
-        "event_id": 37,
+        "map_id": 999,
+        "map_name": "Testingv",
+        "event_id": 5,
         "event_name": "Test Event",
         "page_index": 2,
         "command_index": 0,
-        "x": 19,
-        "y": 19,
+        "x": 11,
+        "y": 2,
         "command": null
+      }
+    },
+    {
+      "code": "unknown_stage",
+      "severity": "error",
+      "message": "The annotation references unknown stage stg_missing9999.",
+      "source": {
+        "kind": "event",
+        "map_id": 999,
+        "map_name": "Testingv",
+        "event_id": 5,
+        "event_name": "Test Event",
+        "page_index": 3,
+        "command_index": 0,
+        "x": 11,
+        "y": 2,
+        "command": "#addToRadar #stage:stg_missing9999 Unknown stage test; expected unknown_stage error"
+      }
+    },
+    {
+      "code": "unknown_capability",
+      "severity": "error",
+      "message": "The annotation references unknown capability cap_missing9999.",
+      "source": {
+        "kind": "event",
+        "map_id": 999,
+        "map_name": "Testingv",
+        "event_id": 5,
+        "event_name": "Test Event",
+        "page_index": 4,
+        "command_index": 0,
+        "x": 11,
+        "y": 2,
+        "command": "#addToRadar #stage:stg_c4h1 #requires:cap_missing9999 Unknown capability test; expected unknown_capability error"
+      }
+    },
+    {
+      "code": "unregistered_content",
+      "severity": "warning",
+      "message": "Recognized soul content is not annotated for the radar.",
+      "source": {
+        "kind": "event",
+        "map_id": 999,
+        "map_name": "Testingv",
+        "event_id": 13,
+        "event_name": "RDT5_04_SIN_RADAR",
+        "page_index": 0,
+        "command_index": 0,
+        "x": 14,
+        "y": 14,
+        "command": "#alma #stage:stg_a1f3"
+      }
+    },
+    {
+      "code": "missing_stage",
+      "severity": "warning",
+      "message": "The annotated page does not declare a stage.",
+      "source": {
+        "kind": "event",
+        "map_id": 999,
+        "map_name": "Testingv",
+        "event_id": 14,
+        "event_name": "RDT5_05_SIN_ETAPA",
+        "page_index": 0,
+        "command_index": 0,
+        "x": 15,
+        "y": 14,
+        "command": "#addToRadar #alma"
+      }
+    },
+    {
+      "code": "unknown_stage",
+      "severity": "error",
+      "message": "The annotation references unknown stage stg_inexistente.",
+      "source": {
+        "kind": "event",
+        "map_id": 999,
+        "map_name": "Testingv",
+        "event_id": 15,
+        "event_name": "RDT5_06_ETAPA_INVALIDA",
+        "page_index": 0,
+        "command_index": 0,
+        "x": 16,
+        "y": 14,
+        "command": "#addToRadar #alma #stage:stg_inexistente"
+      }
+    },
+    {
+      "code": "unknown_capability",
+      "severity": "error",
+      "message": "The annotation references unknown capability cap_inexistente.",
+      "source": {
+        "kind": "event",
+        "map_id": 999,
+        "map_name": "Testingv",
+        "event_id": 16,
+        "event_name": "RDT5_07_REQUISITO_INVALIDO",
+        "page_index": 0,
+        "command_index": 0,
+        "x": 17,
+        "y": 14,
+        "command": "#addToRadar #alma #stage:stg_a1f3 #requires:cap_inexistente"
+      }
+    },
+    {
+      "code": "ambiguous_content",
+      "severity": "error",
+      "message": "Multiple scanner detectors claimed the same page content.",
+      "source": {
+        "kind": "event",
+        "map_id": 999,
+        "map_name": "Testingv",
+        "event_id": 17,
+        "event_name": "RDT5_08_AMBIGUO",
+        "page_index": 0,
+        "command_index": 0,
+        "x": 18,
+        "y": 14,
+        "command": "#addToRadar #alma #stage:stg_a1f3"
       }
     }
   ]
