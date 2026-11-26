@@ -132,6 +132,18 @@
     {
       "id": "honey_tree",
       "name": "Árboles de miel"
+    },
+    {
+      "id": "surf",
+      "name": "Surf"
+    },
+    {
+      "id": "strength",
+      "name": "Fuerza"
+    },
+    {
+      "id": "megastone",
+      "name": "Megapiedras desbloqueadas"
     }
   ]
 }
